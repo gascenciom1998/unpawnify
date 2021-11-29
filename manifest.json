@@ -12,9 +12,17 @@
     }
   ],
   "action": {
-    "default_icon": "pawn.png"
+    "default_icon": "pawn.png",
+    "default_popup": "popup.html"
   },
   "background": {
     "service_worker": "background.js"
-  }
+  },
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "contextMenus",
+    "webRequest"
+  ]
 }
