@@ -7,12 +7,14 @@ document.addEventListener('DOMContentLoaded', function () {
   // })
 
   function logSubmit(event) {
-    // log.textContent = `Form Submitted! Time stamp: ${event.timeStamp}`;
-    // event.preventDefault();
-    console.log(password)
+    const password = document.getElementById('password_value');
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      url = new URL(tabs[0].url);
+      alert(url.hostname);
+    })
   }
 
   const form = document.getElementById('password_form');
-  const password = document.getElementById('password_value');
+  console.log(form);
   form.addEventListener('submit', logSubmit);
 })
