@@ -1,5 +1,3 @@
-// TODO support multiple accounts on same host
-// TODO support more kinds of password forms
 var sha256 = require('js-sha256').sha256;
 
 function passToContent(tabs) {
