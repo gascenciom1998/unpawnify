@@ -17,13 +17,14 @@ Chrome extension to protect reused passwords
 ### How to develop
 
 1. Make your changes locally, make sure to save them
-2. If you made changes to popup.js run
+2. To import node packages into any file other than popup.js ask Gerry for help
+2. If you made changes to popup.js run (IMPORTANT: if you don't do this, the popup changes won't be reflected)
 
         browserify popup.js > popup_bundled.js
 
-  (IMPORTANT: if you don't do this, the popup changes won't be reflected) If you run into errors in this step you might need to run
+3. If you run into errors in the previous step you might need to run
 
-        npm install browserify -g if you run into errors
+        npm install browserify -g
 
 3. On chrome://extensions click on the unpawnify's reload button
 4. To test your changes visit the website you want to test on
