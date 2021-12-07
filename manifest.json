@@ -15,14 +15,17 @@
     "default_icon": "pawn.png",
     "default_popup": "popup.html"
   },
-  "background": {
-    "service_worker": "background.js"
-  },
   "permissions": [
     "storage",
     "tabs",
     "activeTab",
     "contextMenus",
     "webRequest"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["sha256.min.js"],
+      "matches": ["<all_urls>"]
+    }
   ]
 }

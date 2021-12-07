@@ -1,19 +1,14 @@
-// background.js
-
-// Called when the user clicks on the browser action.
-chrome.action.onClicked.addListener(function(tab) {
-  // Send a message to the active tab
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    var activeTab = tabs[0];
-    chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_browser_action"});
-  });
-});
-
-// This block is new!
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if( request.message === "open_new_tab" ) {
-      chrome.tabs.create({"url": request.url});
-    }
-  }
-);
+// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+//   if (request.msg == "password_value") {
+//     sendResponse({ password: request.password });
+//     console.log(sender);
+//     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+//       // chrome.tabs.sendMessage(tabs[0].id, { msg: "password_value_c", password: request.password }, function(response) {});
+//       // console.log(sha256(request.password));
+//       return true;
+//     });
+//   } else {
+//     sendResponse({ result: "error", message: `Invalid 'cmd'` });
+//   }
+//   return true;
+// });
