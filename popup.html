@@ -13,12 +13,12 @@
     }
   </style>
   <body>
-    <h1>Input Your Password</h1>
+    <button id="hash_all_button">Hash all</button>
+    <button id="hash_sel_button">Hash selected</button>
+    <p id="errorMsg" style="color: red; visibility: hidden;">Not a password box.</p>
+    <h1>Fill all password boxes</h1>
     <form id="password_form">
-      <label for="password">
-        Password
-        <input id="password_value" name="password" type="password" placehholder="" autofocus />
-      </label>
+      <input id="password_value" name="password" type="password" placehholder="" />
       <input type="submit" value="Submit" />
     </form>
   </body>
