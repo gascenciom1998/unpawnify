@@ -20,7 +20,7 @@ function hashMsg(tabs,msg) {
     url = new URL(tabs[0].url);
     chrome.tabs.sendMessage(tabs[0].id, { msg: msg }, function(response) {
       if (response.error) {
-        document.getElementById("errorMsg").style.visibility = "visible";
+        document.getElementById("errorMsg").style.display = "initial";
       } else {
         chrome.tabs.sendMessage(tabs[0].id, { msg: "hashes", class: response.class,
           hashes: response.values.map(val => sha256(url.hostname + val))
@@ -32,17 +32,17 @@ function hashMsg(tabs,msg) {
 }
 
 function fillAll(event) {
-  document.getElementById("errorMsg").style.visibility = "hidden";
+  document.getElementById("errorMsg").style.display = "none";
   chrome.tabs.query({ active: true, currentWindow: true }, fillAllMsg);
 }
 
 function hashAll(event) {
-  document.getElementById("errorMsg").style.visibility = "hidden";
+  document.getElementById("errorMsg").style.display = "none";
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => hashMsg(tabs,"hash_all"));
 }
 
 function hashSel(event) {
-  document.getElementById("errorMsg").style.visibility = "hidden";
+  document.getElementById("errorMsg").style.display = "none";
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => hashMsg(tabs,"hash_selected"));
 }
 

@@ -5,22 +5,52 @@
   </head>
   <style type="text/css">
     body {
-      margin: 5px;
+      margin: 9px;
+      width: auto;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-content: center;
+      align-items: center;
     }
     h1 {
       font-size: 15px;
       text-align: center;
     }
+    .hash {
+      display: flex;
+      flex-direction: row;
+    }
+    #hash_all_button, #hash_sel_button {
+      margin: 1px 5px 0 5px;
+    }
+    .inputDiv {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+    #errorMsg {
+      color: red;
+      display: none;
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
   </style>
   <body>
-    <button id="hash_all_button">Hash all</button>
-    <button id="hash_sel_button">Hash selected</button>
-    <p id="errorMsg" style="color: red; visibility: hidden;">Not a password box.</p>
-    <h1>Fill all password boxes</h1>
-    <form id="password_form">
-      <input id="password_value" name="password" type="password" placehholder="" />
-      <input type="submit" value="Submit" />
-    </form>
+    <div class="content">
+      <div class="hash">
+        <button id="hash_all_button">Hash all</button>
+        <button id="hash_sel_button">Hash selected</button>
+      </div>
+      <p id="errorMsg">Not a password box.</p>
+      <h1>Fill all password boxes</h1>
+      <form class="inputDiv" id="password_form">
+        <input id="password_value" name="password" type="password" placehholder="" />
+        <input type="submit" value="Enter" />
+      </form>
+    </div>
   </body>
   <script src="popup_bundled.js"></script>
 </html>
