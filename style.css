@@ -1,0 +1,39 @@
+body {
+  margin: 9px;
+  width: auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-size: 15px;
+  text-align: center;
+}
+
+.hash {
+  display: flex;
+  flex-direction: row;
+}
+
+#hash_all_button, #hash_sel_button {
+  margin: 1px 5px 0 5px;
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#errorMsg {
+  color: red;
+  display: none;
+  margin-top: 10px;
+  margin-bottom: 0;
+}

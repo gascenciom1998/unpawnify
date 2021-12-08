@@ -27,5 +27,6 @@
       "resources": ["sha256.min.js"],
       "matches": ["<all_urls>"]
     }
-  ]
+  ],
+  "options_page": "options.html"
 }
