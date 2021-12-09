@@ -529,11 +529,11 @@ function fillAllMsg(tabs) {
     alert("error");
     setTimeout(() => fillAll(tabs), 1000);
   } else {
-    chrome.storage.sync.get("pad", ({ pad }) => {
-      console.log(pad);
-      url = new URL(tabs[0].url);
+    chrome.storage.sync.get('pad', ({ pad }) => {
+      const padder = !!pad ? pad : "";
+      const url = new URL(tabs[0].url);
       chrome.tabs.sendMessage(tabs[0].id, { msg: "fill_all",
-        password: sha256(url.hostname + password + pad)
+        password: sha256(url.hostname + password + padder),
       }, function(response) {});
     });
   }
@@ -545,14 +545,15 @@ function hashMsg(tabs,msg) {
     alert("error");
     setTimeout(() => hashMsg(tabs,msg), 1000);
   } else {
-    chrome.storage.sync.get("pad", ({ pad }) => {
-      url = new URL(tabs[0].url);
+    chrome.storage.sync.get('pad', ({ pad }) => {
+      const padder = !!pad ? pad : "";
+      const url = new URL(tabs[0].url);
       chrome.tabs.sendMessage(tabs[0].id, { msg: msg }, function(response) {
         if (response.error) {
           document.getElementById("errorMsg").style.display = "initial";
         } else {
           chrome.tabs.sendMessage(tabs[0].id, { msg: "hashes", class: response.class,
-            hashes: response.values.map(val => sha256(url.hostname + val + pad))
+            hashes: response.values.map(val => sha256(url.hostname + val + padder))
           }, function(response) {});
         }
       });

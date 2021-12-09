@@ -6,7 +6,7 @@ function fillAllMsg(tabs) {
     alert("error");
     setTimeout(() => fillAll(tabs), 1000);
   } else {
-    chrome.storage.sync.get("pad", ({ pad }) => {
+    chrome.storage.sync.get('pad', ({ pad }) => {
       const padder = !!pad ? pad : "";
       const url = new URL(tabs[0].url);
       chrome.tabs.sendMessage(tabs[0].id, { msg: "fill_all",
@@ -22,7 +22,7 @@ function hashMsg(tabs,msg) {
     alert("error");
     setTimeout(() => hashMsg(tabs,msg), 1000);
   } else {
-    chrome.storage.sync.get("pad", ({ pad }) => {
+    chrome.storage.sync.get('pad', ({ pad }) => {
       const padder = !!pad ? pad : "";
       const url = new URL(tabs[0].url);
       chrome.tabs.sendMessage(tabs[0].id, { msg: msg }, function(response) {
