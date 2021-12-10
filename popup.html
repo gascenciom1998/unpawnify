@@ -5,17 +5,21 @@
     <link rel="stylesheet" href="style.css"/>
   </head>
   <body>
-    <div class="content">
-      <div class="hash">
-        <button id="hash_all_button">Hash all</button>
-        <button id="hash_sel_button">Hash selected</button>
-      </div>
-      <p id="errorMsg">Not a password box.</p>
+    <div id="no_pad_yet">
+      <h1>Generating pad...</h1>
+    </div>
+    <div id="content">
+      <button id="enable_button">Enable Shortcuts</button>
       <h1>Fill all password boxes</h1>
       <form id="password_form">
-        <input id="password_value" name="password" type="password" placeholder="" />
+        <input id="password_value" name="password" type="password" placeholder="" autofocus/>
         <input type="submit" value="Enter" />
       </form>
+      <div class="hash">
+        <button id="hash_sel_button">Hash selected</button>
+        <button id="hash_all_button">Hash all</button>
+      </div>
+      <p id="errorMsg">Not a password box.</p>
     </div>
   </body>
   <script src="popup_bundled.js"></script>

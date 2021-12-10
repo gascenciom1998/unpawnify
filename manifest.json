@@ -5,12 +5,13 @@
   "version": "1.0",
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
+      "matches": ["<all_urls>"],
       "js": ["jquery-3.6.0.min.js", "content.js"]
     }
   ],
+  "background": {
+    "service_worker": "background_bundled.js"
+  },
   "action": {
     "default_icon": "pawn.png",
     "default_popup": "popup.html"
@@ -28,5 +29,19 @@
       "matches": ["<all_urls>"]
     }
   ],
-  "options_page": "options.html"
+  "options_page": "options.html",
+  "commands": {
+    "hash_sel": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+1"
+      },
+      "description": "Hash selected input"
+    },
+    "hash_all": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+2"
+      },
+      "description": "Hash all inputs"
+    }
+  }
 }

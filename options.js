@@ -1,14 +1,20 @@
-function setPad(event) {
-  event.preventDefault();
-  const input = document.getElementById("pad_value");
-  chrome.storage.local.set({ 'pad': input.value }, function() {
-    chrome.storage.local.get('pad', function(result) {
-      console.log('Value currently is ' + result.pad);
-    });
-  });
-}
+chrome.storage.sync.get('pad', function(result) {
+  if (!!result.pad) {
+    const pad = document.getElementById("pad");
+    pad.innerHTML = result.pad;
+    pad.style.display = "initial";
+  }
+});
 
-var padder_form = document.getElementById("padder_form");
-if (padder_form) {
-  padder_form.addEventListener("submit",setPad);
-}
+chrome.commands.getAll((results) => {
+  for (let result of results) {
+    if (result.name === "hash_all") {
+      const hash_all = document.getElementById("hash_all");
+      hash_all.innerHTML = result.shortcut;
+    }
+    if (result.name === "hash_sel") {
+      const hash_sel = document.getElementById("hash_sel");
+      hash_sel.innerHTML = result.shortcut;
+    }
+  }
+})

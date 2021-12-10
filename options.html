@@ -4,18 +4,30 @@
     <title>Unpawnify: Options</title>
     <link rel="stylesheet" href="options.css"/>
     <link rel="icon" href="pawn.png"/>
-    <script src="options.js"></script>
   </head>
   <body>
     <header>
       <h1>Unpawnify: Options</h1>
     </header>
-    <form id="padder_form">
-      <label for="pad">Optional pad:
-        <input id="pad_value" name="pad" type="text" placeholder=""/>
-      </label>
-      <input type="submit" value="Update"/>
-    </form>
+    <div class="section first">
+      <div class="row">
+        <p>Pad:</p>
+        <p id="pad">
+      </div>
+    </div>
+    <div class="section" id="shortcuts">
+      <div class="row">
+        <p>Hash selected:</p>
+        <p id="hash_sel"></p>
+      </div>
+      <div class="row">
+        <p>Hash all:</p>
+        <p id="hash_all"></p>
+      </div>
+      <div class="row">
+        <p>Go to <b>chrome://extensions/shortcuts</b> to change shortcuts.</p>
+      </div>
+    </div>
   </body>
   <script src="options.js"></script>
 </html>

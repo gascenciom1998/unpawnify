@@ -1,9 +1,10 @@
 body {
   margin: 9px;
   width: auto;
+  min-width: 150px;
 }
 
-.content {
+#content {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -29,6 +30,7 @@ form {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin-bottom: 10px;
 }
 
 #errorMsg {
@@ -36,4 +38,8 @@ form {
   display: none;
   margin-top: 10px;
   margin-bottom: 0;
+}
+
+#content, #no_pad_yet {
+  display: none;
 }

@@ -1,4 +1,83 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+var sha256 = require('js-sha256').sha256;
+const hasher = function(pass,url,pad) {
+  let hash = pass;
+  for (let i = 0; i < 500; i++) {
+    hash = sha256(url.hostname + hash + pad);
+  }
+  return hash;
+}
+
+const randomNonce = function(length) {
+  let text = "";
+  const possible = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm0123456789";
+  for(let i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.get('pad', function(result) {
+    if (!result.pad) {
+      chrome.storage.sync.set({ pad: randomNonce(64) });
+    }
+  });
+});
+
+function checkAction(callback) {
+  chrome.storage.sync.get('disabled', function(result) {
+    if (!result.disabled) {
+      chrome.storage.sync.get('pad', function(result) {
+        if (!!result.pad) {
+          callback();
+        }
+      });
+    }
+  });
+}
+
+function hashMsg(tabs,msg) {
+  if (chrome.runtime.lastError) {
+    alert("error");
+    setTimeout(() => hashMsg(tabs,msg), 1000);
+  } else {
+    chrome.storage.sync.get('pad', ({ pad }) => {
+      const padder = !!pad ? pad : "";
+      const url = new URL(tabs[0].url);
+      chrome.tabs.sendMessage(tabs[0].id, { msg: msg }, function(response) {
+        if (!response.error) {
+          chrome.tabs.sendMessage(tabs[0].id, { msg: "hashes", class: response.class,
+            hashes: response.values.map(val => hasher(val,url,padder))
+          }, function(response) {});
+        }
+      });
+    });
+  }
+  return true;
+}
+
+chrome.commands.onCommand.addListener((command) => {
+  switch (command) {
+    case "hash_all": {
+      checkAction(() => {
+        chrome.tabs.query({ active: true, currentWindow: true },
+          tabs => hashMsg(tabs,"hash_all"));
+      });
+      break;
+    }
+    case "hash_sel": {
+      checkAction(() => {
+        chrome.tabs.query({ active: true, currentWindow: true },
+          tabs => hashMsg(tabs,"hash_selected"));
+      });
+      break;
+    }
+    default: {}
+  }
+});
+
+},{"js-sha256":2}],2:[function(require,module,exports){
 (function (process,global){(function (){
 /**
  * [js-sha256]{@link https://github.com/emn178/js-sha256}
@@ -520,113 +599,7 @@
 })();
 
 }).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":3}],2:[function(require,module,exports){
-var sha256 = require('js-sha256').sha256;
-const hasher = function(pass,url,pad) {
-  let hash = pass;
-  for (let i = 0; i < 500; i++) {
-    hash = sha256(url.hostname + hash + pad);
-  }
-  return hash;
-}
-
-function fillAllMsg(tabs) {
-  const password = document.getElementById('password_value').value;
-  if (chrome.runtime.lastError) {
-    alert("error");
-    setTimeout(() => fillAll(tabs), 1000);
-  } else {
-    chrome.storage.sync.get('pad', ({ pad }) => {
-      const padder = !!pad ? pad : "";
-      const url = new URL(tabs[0].url);
-      chrome.tabs.sendMessage(tabs[0].id, { msg: "fill_all",
-        password: hasher(password,url,padder), pad: pad,
-      }, function(response) {});
-    });
-  }
-  return true;
-}
-
-function hashMsg(tabs,msg) {
-  if (chrome.runtime.lastError) {
-    alert("error");
-    setTimeout(() => hashMsg(tabs,msg), 1000);
-  } else {
-    chrome.storage.sync.get('pad', ({ pad }) => {
-      const padder = !!pad ? pad : "";
-      const url = new URL(tabs[0].url);
-      chrome.tabs.sendMessage(tabs[0].id, { msg: msg }, function(response) {
-        if (response.error) {
-          document.getElementById("errorMsg").style.display = "initial";
-        } else {
-          chrome.tabs.sendMessage(tabs[0].id, { msg: "hashes", class: response.class,
-            hashes: response.values.map(val => hasher(val,url,padder))
-          }, function(response) {});
-        }
-      });
-    });
-  }
-  return true;
-}
-
-function fillAll(event) {
-  event.preventDefault();
-  document.getElementById("errorMsg").style.display = "none";
-  chrome.tabs.query({ active: true, currentWindow: true }, fillAllMsg);
-}
-
-function hashAll(event) {
-  document.getElementById("errorMsg").style.display = "none";
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => hashMsg(tabs,"hash_all"));
-}
-
-function hashSel(event) {
-  document.getElementById("errorMsg").style.display = "none";
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => hashMsg(tabs,"hash_selected"));
-}
-
-const form = document.getElementById('password_form');
-form.addEventListener('submit', fillAll);
-
-const hashAllBtn = document.getElementById('hash_all_button');
-hashAllBtn.addEventListener('click', hashAll);
-
-const hashSelBtn = document.getElementById('hash_sel_button');
-hashSelBtn.addEventListener('click', hashSel);
-
-const btn = document.getElementById("enable_button");
-chrome.storage.sync.get('disabled', function(result) {
-  if (result.disabled) {
-    btn.innerHTML = "Enable Shortcuts";
-  } else {
-    btn.innerHTML = "Disable Shortcuts";
-  }
-});
-btn.addEventListener("click", (event) => {
-  chrome.storage.sync.get('disabled', function(result) {
-    if (result.disabled) {
-      chrome.storage.sync.set({ disabled: false });
-      btn.innerHTML = "Disable Shortcuts";
-    } else {
-      chrome.storage.sync.set({ disabled: true });
-      btn.innerHTML = "Enable Shortcuts";
-    }
-  });
-})
-
-chrome.storage.sync.get('pad', function(result) {
-  const before = document.getElementById("no_pad_yet");
-  const after = document.getElementById("content");
-  if (!result.pad) {
-    before.style.display = "initial";
-  } else {
-    after.style.display = "flex";
-    const input = document.getElementById("password_value");
-    input.focus();
-  }
-});
-
-},{"js-sha256":1}],3:[function(require,module,exports){
+},{"_process":3}],3:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -812,4 +785,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[2]);
+},{}]},{},[1]);
