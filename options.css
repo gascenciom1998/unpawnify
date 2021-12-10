@@ -49,13 +49,6 @@ p {
 }
 
 #pad {
-  display: none;
-  cursor: default;
+  visibility: hidden;
   font-weight: bold;
-  filter: blur(6px);
-  transition: filter 0.2s;
-}
-
-#pad:hover {
-  filter: blur(0);
 }

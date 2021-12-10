@@ -1,9 +1,11 @@
 chrome.storage.sync.get('pad', function(result) {
+  const pad = document.getElementById("pad");
   if (!!result.pad) {
-    const pad = document.getElementById("pad");
-    pad.innerHTML = result.pad;
-    pad.style.display = "initial";
+    pad.innerHTML = "Pad already set.";
+  } else {
+    pad.innerHTML = "No pad set yet.";
   }
+  pad.style.visibility = "visible";
 });
 
 chrome.commands.getAll((results) => {
