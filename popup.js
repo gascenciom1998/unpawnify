@@ -4,7 +4,7 @@ const hasher = function(pass,url,pad) {
   for (let i = 0; i < 500; i++) {
     hash = sha256(url.hostname + hash + pad);
   }
-  return hash+"@A";
+  return "@A"+hash;
 }
 
 function fillAllMsg(tabs) {
